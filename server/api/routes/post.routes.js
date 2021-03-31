@@ -3,7 +3,6 @@ const Router = express.Router();
 
 // importing our post model
 const Post = require("../../model/post.model");
-const { response } = require("express");
 
 // @desc getting all the posts
 // @access public
