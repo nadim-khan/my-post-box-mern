@@ -13,7 +13,7 @@ const MenuBarComponent = () => {
     <div>
       <Navbar light expand="md">
         <Link className="navbar-brand" to="/">
-          MY POST
+          MY PO-BOX
         </Link>
         <NavbarToggler onClick={toggleHandler}></NavbarToggler>
         <Collapse isOpen={isOpen} navbar>

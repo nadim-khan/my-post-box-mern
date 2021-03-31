@@ -1,76 +1,65 @@
-import React from 'react'
-import { Card, CardBody, CardHeader, CardText,Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import React from "react";
+import { Card, CardHeader, CardBody, CardText, Button } from "reactstrap";
+import { connect } from "react-redux";
+import { deletePost, getPostDate } from "../redux/post/postActions";
+import { Redirect } from "react-router-dom";
 
+const Post = ({
+  id,
+  author,
+  content,
+  updatedAt,
+  createdAt,
+  deletePost,
+  getPostDate,
+  post,
+}) => {
+  const isUpdateElement = post ? (
+    <Redirect to="/update" />
+  ) : (
+    <div className="mb-4">
+      <Card>
+        <CardHeader>{`${author} - ${new Date(
+          createdAt
+        ).toDateString()}`}</CardHeader>
+        <CardBody>
+          <CardText>{content}</CardText>
+          <CardText>
+            Last updated at - {new Date(updatedAt).toLocaleString()}
+          </CardText>
+          <Button
+            className="mr-2"
+            color="primary"
+            onClick={() => getPostDate(id)}
+          >
+            Edit
+          </Button>
+          <Button
+            className="mr-2"
+            color="danger"
+            onClick={() => deletePost(id)}
+          >
+            Delete
+          </Button>
+        </CardBody>
+      </Card>
+    </div>
+  );
 
-// const imageArea = {
-//     width:'50px',
-//     height:'50px',
-//     color:'white',
-//     background:'blue',
-//     border:'1px solid black'
-// }
+  return isUpdateElement;
+};
 
-const Post = ({id,author,content, updatedAt,createdAt}) => {
-    const initialPost = {
-        id : id,
-        author:author,
-        content:content
-    }
-    const [modal, setModal] = React.useState(false);
-    const [editPostData,updatePost] = React.useState(initialPost);
-    const toggle = () => setModal(!modal);
-    // const shortname = (name) =>{
-    //     const names = name.split(' ');
-    //     if(names.length>1){
-    //         return names[0].split('')[0]+names[1].split('')[0]
-    //     } else {
-    //         return names[0].split('')[0]+names[0].split('')[1]
-    //     }
-    // }
+const mapStateToProps = (state) => {
+  return {
+    post: state.post,
+  };
+};
 
-    const changeHandler=(e)=>{
-        updatePost({
-                ...editPostData,
-                [e.target.name]:e.target.value}
-                );
-    }
-    const updateEdited=(e)=>{
-        e.preventDefault();
-        console.log('Updated to : ',editPostData);
-    }
-    return (
-        <div className="mb-4">
-            <Card>
-                <CardHeader>
-                   {/* <span style={imageArea}>{shortname(author).toUpperCase()}</span> */}
-                   <span>{`${author}`}</span>
-                   <p>{`${new Date(createdAt).toDateString()}`}</p>
-                </CardHeader>
-                <CardBody>
-                    <CardText>{content}</CardText>
-                    <CardText>Last Updated : {new Date(updatedAt).toLocaleString()}</CardText>
-                    <Button color="primary" onClick={toggle}>Edit</Button>
-                    <Button className="mr-2" color="danger">Delete</Button>
-                    
-                    <Modal isOpen={modal} toggle={toggle} >
-                    <form onSubmit={updateEdited}>
-                        <ModalHeader toggle={toggle}>Edit Post : {id}</ModalHeader>
-                        <ModalBody>
-                            <label>Author </label>
-                                <input type="text" name="author" value={editPostData.author} onChange={changeHandler}/>
-                                <label>Content </label>
-                                <input type="text" name="content" value={editPostData.content} onChange={changeHandler}/>
-                        </ModalBody>
-                        <ModalFooter>
-                        <Button color="primary" type="submit" onClick={toggle}>Update</Button>{' '}
-                        <Button color="secondary" onClick={toggle}>Cancel</Button>
-                        </ModalFooter>
-                    </form>
-                    </Modal>
-                </CardBody>
-            </Card>
-        </div>
-    )
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deletePost: (id) => dispatch(deletePost(id)),
+    getPostDate: (id) => dispatch(getPostDate(id)),
+  };
+};
 
-export default Post
+export default connect(mapStateToProps, mapDispatchToProps)(Post);
