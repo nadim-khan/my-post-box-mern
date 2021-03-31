@@ -18,3 +18,6 @@ export const fetchAllRequests = () => (dispatch) =>{
     })
 }
 
+export const updateThisPost = (dispatch)=>{
+    dispatch({type:actions.UPDATE_THIS_POST});
+}
