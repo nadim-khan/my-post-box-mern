@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "startBackend": "nodemon server/server.js",
-    "startApp": "concurrently \"npm run startBackend\" \"npm run start\"",
+    "startApp": "concurrently \"npm run startBackend\" \"npm run build\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
